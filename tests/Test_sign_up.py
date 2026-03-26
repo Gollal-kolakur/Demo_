@@ -1,0 +1,108 @@
+
+
+from playwright.sync_api import expect
+
+from pages.Sign_up_page import  Signup
+
+
+
+
+
+
+
+
+
+
+def test_registration( sign_cred, home_page):
+
+    signup = Signup(home_page)
+    signup.open_signup_form()
+    data = sign_cred["New_signup"]
+    name =data["Name"]
+    email =data["Email"]
+    signup.enter_basic_signup_info(name, email)
+
+
+def test_signup_wrong_cred(home_page, sign_cred):
+    signup = Signup(home_page)
+    signup.open_signup_form()
+    data = sign_cred["wrong_signup"]
+    name =data["Name"]
+    email =data["Email"]
+    signup.basic_signup_wrong(name, email)
+    msg = signup.error_pop_up()
+    print("Validation message:", msg)
+    assert "@" in msg
+
+def test_existing_email(home_page, sign_cred):
+    signup = Signup(home_page)
+    signup.open_signup_form()
+    data = sign_cred["New_signup"]
+    name = data["Name"]
+    email = data["Email"]
+    signup.enter_basic_signup_info(name, email)
+    prompt = home_page.get_by_text("Email Address already exist!")
+    expect(prompt).to_be_visible()
+    expect(prompt).to_have_text("Email Address already exist!")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
