@@ -1,0 +1,26 @@
+{
+  "user_credentials":
+  [
+
+    {
+      "tag": "valid",
+    "username":"gollal009@gmail.com",
+    "password": "Gollal1234"
+    },
+    {
+       "tag": "invalid",
+    "username":"gollal009@gmail.com",
+    "password": "Gollal123"
+    },
+    {
+      "tag": "invalid_user",
+    "username":"gollal009com",
+    "password": "Gollal123"
+    },
+    {
+      "tag": "invalid_password",
+    "username":"gollal009com",
+    "password": ""
+    }
+  ]
+}
