@@ -249,10 +249,10 @@ print(obj18.missing_number([1,2,4,5], 5))
 
 
 
-#12sum of pair of 2 fixed dices
-#13count the total number of subarrays non duplicates
-#14Find the sum of all subarrays
-#15Find the subarray with given sum k
+
+
+
+
 
 
 
