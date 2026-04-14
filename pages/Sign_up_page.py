@@ -10,7 +10,7 @@ class Signup:
 
     """
     #Locator
-    URL = "https://automationexercise.com/"
+
     HOME_TEXT = "Home"
     SIGN_UP_TEXT = "New User Signup!"
     CREATE_ACCOUNT_TEXT = "Enter Account Information"
