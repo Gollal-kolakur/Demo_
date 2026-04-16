@@ -13,7 +13,7 @@ from pages.Sign_up_page import  Signup
 
 
 
-def test_registration(home_page):
+def test_registration(browser_page):
     pass
 
 def test_signup_wrong_cred(home_page, sign_cred):

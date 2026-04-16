@@ -4,17 +4,18 @@ import pytest
 def pytest_addoption(parser):
     group = parser.getgroup("browser")
     group.addoption(
-        "--browsername",
-        action="store",
-        dest="browser_n",
-        default="chromium",
-        help="Browser: chromium, firefox, webkit"
+        "--browsername", action="store", dest="browser_n", default="chromium", help="Browser: chromium, firefox, webkit"
+    )
+
+    group.addoption(
+        "--url", action="store", dest="url_links", default="https://automationexercise.com/"
     )
 
 
-@pytest.fixture
+@pytest.fixture(scope = "function")
 def browser_page(playwright, request ): #p is an instance object to control the browser engine
     browser_name = request.config.getoption("browser_n")
+    url = request.config.getoption("url_links")
     print("BROWSER VALUE:", request.config.getoption("browser_n"))
     if browser_name == "chromium":
         browser = playwright.chromium.launch(headless=True,slow_mo=1000)
@@ -27,16 +28,14 @@ def browser_page(playwright, request ): #p is an instance object to control the 
 
     context= browser.new_context()
     pg = context.new_page()
+    pg.goto(url)
     yield pg
     pg.close()
     context.close()
     browser.close()
 
 
-@pytest.fixture(scope="function")
-def home_page(browser_page:Page):
-        browser_page.goto("https://automationexercise.com/", wait_until="domcontentloaded")
-        yield browser_page
+
 
 
 
