@@ -16,13 +16,12 @@ def pytest_addoption(parser):
 def browser_page(playwright, request ): #p is an instance object to control the browser engine
     browser_name = request.config.getoption("browser_n")
     url = request.config.getoption("url_links")
-    print("BROWSER VALUE:", request.config.getoption("browser_n"))
     if browser_name == "chromium":
-        browser = playwright.chromium.launch(headless=True,slow_mo=1000)
+        browser = playwright.chromium.launch(headless=False,slow_mo=2000)
     elif browser_name == "firefox":
-        browser = playwright.firefox.launch(headless=True, slow_mo=1000)
+        browser = playwright.firefox.launch()
     elif browser_name == "webkit":
-        browser = playwright.webkit.launch(headless=True, slow_mo=1000)
+        browser = playwright.webkit.launch()
     else:
         raise ValueError(f"Unsupported browser: {browser_name}")
 

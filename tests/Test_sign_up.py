@@ -8,12 +8,16 @@ from pages.Sign_up_page import  Signup
 
 
 
+from utils.logger import get_logger
+logger = get_logger(__name__)
 
 
 
 
 
 def test_registration(browser_page):
+    logger.info(f"launching the browser and page: {browser_page.url}")
+    browser_page.pause()
     pass
 
 def test_signup_wrong_cred(home_page, sign_cred):
