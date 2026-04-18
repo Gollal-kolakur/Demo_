@@ -1,4 +1,5 @@
 from typing import List
+import os
 
 #1check for palindrome
 class Solution1:
@@ -260,3 +261,7 @@ class Solution18:
 
 ins18 = Solution18([1,2,4,5,6])
 print(ins18.miss_num(6))
+
+
+
+
