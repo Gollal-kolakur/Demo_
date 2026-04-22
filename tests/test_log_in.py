@@ -17,8 +17,13 @@ def test_login(browser_page,user_cred):
     password = user_cred["password"]
     button.login_button(email,password)
 
-
-    if data == "invalid_password":
+    if data == "valid":
+        pytest.skip("not working cred")
+    elif data == "invalid":
+        button.invalid_login()
+    elif data == "invalid_user":
+        button.invalid_user()
+    elif data == "invalid_password":
         button.invalid_password()
     else:
         print("test data not available")
