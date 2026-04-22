@@ -1,5 +1,5 @@
 from pages.create_account_page import create_account
-from pages.Sign_up_page import Signup
+from pages.sign_up_page import Signup
 
 
 

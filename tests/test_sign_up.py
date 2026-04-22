@@ -2,7 +2,7 @@
 
 from playwright.sync_api import expect
 
-from pages.Sign_up_page import  Signup
+from pages.sign_up_page import  Signup
 
 
 

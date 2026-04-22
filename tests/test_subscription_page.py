@@ -1,5 +1,5 @@
 from playwright.sync_api import Page
-from pages.Subscription_page import subscription_page
+from pages.subscription_page import subscription_page
     
     
     

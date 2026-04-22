@@ -1,4 +1,4 @@
-from pages.Ts_case_page import TS_case_page
+from pages.ts_case_page import TS_case_page
 
 
 
