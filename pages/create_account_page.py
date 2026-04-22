@@ -1,6 +1,7 @@
 
 
 from playwright.sync_api import Playwright, expect
+from pages.Sign_up_page import Signup
 
 
 
@@ -8,28 +9,34 @@ from playwright.sync_api import Playwright, expect
 
 class create_account:
 
+    title = "#id_gender1"
+    name = "input[data-qa='name']"
+    email = "#email"
+    password_box = "#password"
+    news_letter_check = "label[for='newsletter']"
+    offer_letter_check = "label[for='optin']"
+
 
     def __init__(self ,page):
         self.page = page
+        print(self.page)
 
-
-    def create_account_details(self):
+    def create_account_details(self,password):
+        #Enter account information
         self.page.wait_for_load_state("load")
-        self.page.get_by_label("Mr.").check()
-        expect(self.page.locator("input[data-qa='name']")).not_to_have_value("")
-        password_field = (self.page.locator("input[data-qa='password']"))
-        expect(password_field).to_be_visible()
-        password_field.fill("Test@1234")
-        expect(password_field).to_have_value("Test@1234")
-        newsletter_checkbox = self.page.get_by_label("Sign up for our newsletter!")
-        newsletter_checkbox.check()
-        expect(newsletter_checkbox).to_be_checked()
-        offer_checkbox = self.page.get_by_label("Receive special offers from our partners!")
-        offer_checkbox.check()
-        expect(offer_checkbox).to_be_checked()
-        self.page.select_option("#days", "10")
+        self.page.locator(self.title).check()
+        validation_name = self.page.locator(self.name)
+        assert validation_name != ""
+        expect(self.page.locator(self.email)).not_to_have_value("")
+        self.page.locator(self.password_box).fill(password)
+        self.page.select_option("#days", "10")                     # select_option to select from dropdown
         self.page.select_option("#months", "5")
         self.page.select_option("#years", "1995")
+        self.page.locator(self.news_letter_check).check()
+        self.page.locator(self.offer_letter_check).check()
+
+
+        #Adress Information
         self.page.check("#newsletter")
         self.page.check("#optin")
         self.page.fill("#first_name", "John")
@@ -45,6 +52,12 @@ class create_account:
         self.page.click("button[data-qa='create-account']")
         self.page.wait_for_selector("text=ACCOUNT CREATED!")
         self.page.locator("[data-qa='continue-button']").click()
+        self.page.get_by_role("link", name= "Delete Account").click()
+        self.page.locator("a[data-qa='continue-button']").click()
+        print("account created and deleted successfully")
+
+
+
 
 
 

@@ -1,14 +1,18 @@
 from typing import List
-#check for palindrome
-class Solution1:
-    def reverse_string(self,string:str)->bool:
-        reverse = string[::-1]
-        if string == reverse:
-            return True
-        return False
 
-obj1 = Solution1()
-print(obj1.reverse_string("gollal"))
+
+# For automation coding
+
+#check for palindrome
+
+def reverse_string(self,string:str)->bool:
+    reverse = string[::-1]
+    if string == reverse:
+        return True
+    return False
+
+
+print(reverse_string("gollal"))
 
 #reverse sentence
 class Solution2:
@@ -121,6 +125,29 @@ class Solution10:
 obj10 = Solution10()
 print(obj10.second_max([1,2,3,4]))
 
+#18Find missing number in array
+class Solution18:
+    def missing_number(self, arr: List[int], n: int):
+        expected_sum = n * (n + 1) // 2
+        actual_sum = sum(arr)
+        return expected_sum - actual_sum
+
+obj18 = Solution18()
+print(obj18.missing_number([1,2,4,5], 5))
+
+"""Anagram
+check → Should
+know ✅ Count
+occurrences → Should
+know"""
+
+
+
+
+
+
+##For SDET Roles
+
 #11sum of xor of an array values
 class Solution11:
     def sum_XOR(self,arr:List[int])->int:
@@ -207,15 +234,7 @@ print(obj16.sub_arrays_const([1,2,3,4,5],3))
 
 #17First non-repeating character
 
-#18Find missing number in array
-class Solution18:
-    def missing_number(self, arr: List[int], n: int):
-        expected_sum = n * (n + 1) // 2
-        actual_sum = sum(arr)
-        return expected_sum - actual_sum
 
-obj18 = Solution18()
-print(obj18.missing_number([1,2,4,5], 5))
 
 
 

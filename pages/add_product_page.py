@@ -1,4 +1,5 @@
 from playwright.sync_api import expect
+from typing import List
 
 
 class add_product_cart():
@@ -19,3 +20,4 @@ class add_product_cart():
         second_product.hover()
         second_product.locator(".add-to-cart").nth(1).click()
         self.page.get_by_role("button", name="Continue Shopping").click()
+

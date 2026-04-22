@@ -6,12 +6,12 @@ class Solution1:
     def __init__(self,word):
         self.word = word
 
-    def palindrome_check(self)->bool:
+    def palindrome_check(self):
         reverse = self.word[::-1]
         if reverse == self.word:
             return True
         return False
-obj1 = Solution1("madam")
+obj1 = Solution1("gollal")
 print(obj1.palindrome_check())
 
 

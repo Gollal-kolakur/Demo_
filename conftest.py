@@ -1,5 +1,6 @@
 from playwright.sync_api import Playwright, Page
 import pytest
+import json
 
 def pytest_addoption(parser):
     group = parser.getgroup("browser")
@@ -16,7 +17,7 @@ def pytest_addoption(parser):
 def browser_page(playwright, request ): #p is an instance object to control the browser engine
     browser_name = request.config.getoption("browser_n")
     url = request.config.getoption("url_links")
-    print("BROWSER VALUE:", request.config.getoption("browser_n"))
+    print(f"BROWSER VALUE: {browser_name}" )
     if browser_name == "chromium":
         browser = playwright.chromium.launch(headless=True,slow_mo=1000)
     elif browser_name == "firefox":

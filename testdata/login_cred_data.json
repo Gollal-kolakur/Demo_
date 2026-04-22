@@ -5,7 +5,7 @@
     {
       "tag": "valid",
     "username":"gollal009@gmail.com",
-    "password": "Gollal1234"
+    "password": "Gollal@1234"
     },
     {
        "tag": "invalid",
@@ -19,8 +19,14 @@
     },
     {
       "tag": "invalid_password",
-    "username":"gollal009com",
+    "username":"gollal009@gmail.com",
     "password": ""
     }
-  ]
+  ],
+   "sign_up_credentials":
+   {
+     "name": "gollal",
+     "email": "gollal001@gmail.com",
+     "password": "Test@1234"
+   }
 }

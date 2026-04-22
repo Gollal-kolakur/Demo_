@@ -1,6 +1,6 @@
 from playwright.sync_api import Playwright, expect
 
-
+from conftest import browser_page
 
 
 class Signup:
@@ -10,43 +10,29 @@ class Signup:
 
     """
     #Locator
-
-    HOME_TEXT = "Home"
-    SIGN_UP_TEXT = "New User Signup!"
-    CREATE_ACCOUNT_TEXT = "Enter Account Information"
-
-
-
+    sign_up_link = "Signup / Login" #text
+    header_name = "New User Signup!" #text
+    name_box = 'input[type="text"]'   #tag with attribute
+    email_box = "//input[@data-qa='signup-email']"   # relative xpath
+    sign_up_button = "//button[@data-qa='signup-button']" # relative xpath
+    create_account_header = "Enter Account Information" # text
 
     def __init__(self,page):
         self.page = page
 
 
+    def open_signup_form(self,email,name):
+        self.page.get_by_role("link", name= self.sign_up_link).click()
+        validation = self.page.get_by_role("heading", name = self.header_name)
+        expect(validation).to_be_visible()
+        self.page.locator(self.name_box).fill(email)
+        self.page.locator(self.email_box).fill(name)   # relative xpath //tag[attribute] will find all from input
+        self.page.locator(self.sign_up_button).click()
+        account_page_header = self.page.get_by_role("heading", name= self.create_account_header)
+        expect(account_page_header).to_be_visible()
 
 
-    def open_signup_form(self):
-        self.page.get_by_role("link", name = "Signup / Login").click()
-        sign_up = self.page.get_by_text(self.SIGN_UP_TEXT)
 
-
-
-    def enter_basic_signup_info(self, name, email):
-        self.page.locator("input[name='name']").fill(name)
-        self.page.locator("input[data-qa='signup-email']").fill(email)
-        self.page.get_by_role("button", name="Signup").click()
-        self.page.wait_for_load_state("load")
-
-
-    def basic_signup_wrong(self, name, email):
-        self.page.locator("input[name='name']").fill(name)
-        self.page.locator("input[data-qa='signup-email']").fill(email)
-        self.page.get_by_role("button", name="Signup").click()
-
-
-    def error_pop_up(self):
-        email = self.page.wait_for_selector('input[data-qa="signup-email"]')
-        validation_msg = email.evaluate("el => el.validationMessage")
-        return validation_msg
 
 
 
