@@ -1,5 +1,5 @@
-from pages.Sign_up_page import Signup
-from pages.Log_in import LogInPage
+from pages.sign_up_page import Signup
+from pages.log_in import LogInPage
 
 
 
