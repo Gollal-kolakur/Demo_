@@ -13,7 +13,7 @@ def pytest_addoption(parser):
 
 
 @pytest.fixture(scope = "function")
-def browser_page(playwright, request ): #p is an instance object to control the browser engine
+def browser_page(playwright:Playwright, request ): #p is an instance object to control the browser engine
     browser_name = request.config.getoption("browser_n")
     url = request.config.getoption("url_links")
     if browser_name == "chromium":
@@ -33,8 +33,7 @@ def browser_page(playwright, request ): #p is an instance object to control the 
     context.close()
     browser.close()
 
-def test_tril(browser_page):
-    pass
+
 
 
 

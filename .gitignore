@@ -13,7 +13,6 @@ __pycache__/
 # ----------------------------
 # Playwright / reports
 # ----------------------------
-playwright-report/
 test-results/
 *.html
 
@@ -31,5 +30,5 @@ test-results/
 # ----------------------------
 # Secrets / sensitive files
 # ----------------------------
-credential.json
+testdata/credential.json
 .env
