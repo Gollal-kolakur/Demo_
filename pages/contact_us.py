@@ -14,6 +14,7 @@ class contact_us:
 
        self.page.get_by_placeholder("Name").fill("Gollal")
        self.page.locator("input[data-qa='email']").fill("gollal009@gmail.com")
+
        subject = self.page.locator("input[data-qa='subject']")
        expect(subject).to_be_visible()
        subject.fill("djbsjdb")

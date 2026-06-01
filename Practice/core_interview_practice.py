@@ -1,18 +1,18 @@
 from typing import List
 #check for palindrome
 class Solution1:
-    def reverse_string(self,string:str)->bool:
+    def palindrome(self,string:str)->bool:
         reverse = string[::-1]
         if string == reverse:
             return True
         return False
 
 obj1 = Solution1()
-print(obj1.reverse_string("gollal"))
+print(obj1.palindrome("gollal"))
 
 #reverse sentence
 class Solution2:
-    def reverse_sentence(self,string:str)->bool:
+    def reverse_sentence(self,string:str)->str:
         string_array = string.split()
         reverse = string_array[::-1]
         result = " ".join(reverse)
@@ -99,8 +99,7 @@ class Solution9:
         for ch in string:
             if ch in frequency:
                 frequency[ch] += 1
-            else:
-                frequency[ch] = 1
+            frequency[ch] = 1
         return frequency
 obj9 = Solution9()
 print(obj9.frequency_string("gollal"))
@@ -216,6 +215,7 @@ class Solution18:
 
 obj18 = Solution18()
 print(obj18.missing_number([1,2,4,5], 5))
+
 
 
 

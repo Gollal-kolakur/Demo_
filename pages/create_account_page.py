@@ -1,7 +1,6 @@
 
-
 from playwright.sync_api import Playwright, expect
-
+import pytest
 
 
 
@@ -45,6 +44,21 @@ class create_account:
         self.page.click("button[data-qa='create-account']")
         self.page.wait_for_selector("text=ACCOUNT CREATED!")
         self.page.locator("[data-qa='continue-button']").click()
+
+
+        for index in range (self.page.locator(".cart_menu td").count()):
+            if self.page.locator(".cart_menu td").nth(index).filter(has_text = "total").count()>0:
+                colvalue = index
+                break
+
+        fancyderss = self.page.locator("tr").filter(has_text = "Women > Tops")
+        expect(fancyderss.locator("td").nth(colvalue)).to_have_text("700")
+
+
+
+
+
+
 
 
 
