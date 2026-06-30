@@ -17,11 +17,11 @@ def browser_page(playwright:Playwright, request ): #p is an instance object to c
     browser_name = request.config.getoption("browser_n")
     url = request.config.getoption("url_links")
     if browser_name == "chromium":
-        browser = playwright.chromium.launch(headless=False,slow_mo=2000)
+        browser = playwright.chromium.launch()
     elif browser_name == "firefox":
-        browser = playwright.firefox.launch(headless=True,slow_mo=2000)
+        browser = playwright.firefox.launch()
     elif browser_name == "webkit":
-        browser = playwright.webkit.launch(headless=True,slow_mo=2000)
+        browser = playwright.webkit.launch()
     else:
         raise ValueError(f"Unsupported browser: {browser_name}")
 
