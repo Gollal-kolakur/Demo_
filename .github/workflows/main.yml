@@ -8,35 +8,35 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    
-    container:
-      image: ://microsoft.com
+    runs-on: ubuntu-latest # ಯಾವುದೇ ಡಾಕರ್ ಇಮೇಜ್ ಗೊಂದಲಗಳಿಲ್ಲದೆ ನೇರವಾಗಿ ರನ್ ಆಗುತ್ತದೆ
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Python Dependencies
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install pytest pytest-playwright allure-pytest
+
+    - name: Install Playwright Browsers with Dependencies
+      run: |
+        playwright install --with-deps
 
     - name: Run pytest with Allure
       env:
         PYTHONPATH: .
       run: |
         pytest --alluredir=allure-results
-      continue-on-error: true # ಟೆಸ್ಟ್ ಫೇಲ್ ಆದರೂ ರಿಪೋರ್ಟ್ ಜನರೇಟ್ ಆಗಲು ಇದು ಮುಖ್ಯ
+      continue-on-error: true
 
-    # ಕಂಟೇನರ್ ಒಳಗೆ ಜಾವಾ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡುತ್ತದೆ (ಅಲ್ಯೂರ್ ಜನರೇಟ್ ಮಾಡಲು ಜಾವಾ ಬೇಕು)
-    - name: Install Java
-      run: |
-        apt-get update && apt-get install -y openjdk-17-jre-headless
-
-    # ಇದು ಅಲ್ಯೂರ್ ರಿಪೋರ್ಟ್ ಜನರೇಟ್ ಮಾಡಿ ಆಟೋಮ್ಯಾಟಿಕ್ ಆಗಿ gh-pages ಬ್ರಾಂಚ್‌ಗೆ ಪಬ್ಲಿಷ್ ಮಾಡುತ್ತದೆ
-    - name: Load Allure History and Publish Report
+    - name: Run Allure Action to Generate Report
       uses: simple-elf/allure-report-action@master
       if: always()
       with:
