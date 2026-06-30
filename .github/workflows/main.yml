@@ -6,9 +6,14 @@ on:
   pull_request:
     branches: [ "master" ]
 
+# ಈ ಕೆಳಗಿನ ಪರ್ಮಿಷನ್ ಬ್ಲಾಕ್ 403 ದೋಷವನ್ನು ಸಂಪೂರ್ಣವಾಗಿ ನಿವಾರಿಸುತ್ತದೆ
+permissions:
+  contents: write
+  pages: write
+
 jobs:
   test:
-    runs-on: ubuntu-latest # ಯಾವುದೇ ಡಾಕರ್ ಇಮೇಜ್ ಗೊಂದಲಗಳಿಲ್ಲದೆ ನೇರವಾಗಿ ರನ್ ಆಗುತ್ತದೆ
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
