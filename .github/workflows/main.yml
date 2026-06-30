@@ -8,44 +8,48 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest # ಡಾಕರ್ ಕಂಟೇನರ್ ಬದಲಿಗೆ ನೇರವಾಗಿ ಕ್ಲೌಡ್ ಹೋಸ್ಟ್ ಬಳಸುತ್ತಿದ್ದೇವೆ
+    runs-on: ubuntu-latest
+    
+    container:
+      image: ://microsoft.com
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-
-    - name: Install dependencies
+    - name: Set up Python Dependencies
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install pytest pytest-playwright allure-pytest
-
-    - name: Install Playwright Browsers with Dependencies
-      run: |
-        playwright install --with-deps
 
     - name: Run pytest with Allure
       env:
         PYTHONPATH: .
       run: |
         pytest --alluredir=allure-results
-      continue-on-error: true
+      continue-on-error: true # ಟೆಸ್ಟ್ ಫೇಲ್ ಆದರೂ ರಿಪೋರ್ಟ್ ಜನರೇಟ್ ಆಗಲು ಇದು ಮುಖ್ಯ
 
-    - name: Run Allure Action to Generate Report
-      uses: allure-framework/allure-action@v0
+    # ಕಂಟೇನರ್ ಒಳಗೆ ಜಾವಾ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡುತ್ತದೆ (ಅಲ್ಯೂರ್ ಜನರೇಟ್ ಮಾಡಲು ಜಾವಾ ಬೇಕು)
+    - name: Install Java
+      run: |
+        apt-get update && apt-get install -y openjdk-17-jre-headless
+
+    # ಇದು ಅಲ್ಯೂರ್ ರಿಪೋರ್ಟ್ ಜನರೇಟ್ ಮಾಡಿ ಆಟೋಮ್ಯಾಟಿಕ್ ಆಗಿ gh-pages ಬ್ರಾಂಚ್‌ಗೆ ಪಬ್ಲಿಷ್ ಮಾಡುತ್ತದೆ
+    - name: Load Allure History and Publish Report
+      uses: simple-elf/allure-report-action@master
       if: always()
       with:
-        report-directory: "allure-report"
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        allure_results: allure-results
+        allure_history: allure-history
+        keep_reports: 20
+        gh_pages: gh-pages
+        allure_report: allure-report
 
     - name: Deploy Allure Report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       if: always()
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: allure-report
+        publish_branch: gh-pages
+        publish_dir: allure-history
