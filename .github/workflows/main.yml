@@ -1,4 +1,4 @@
-ame: Run Python Playwright Tests with Allure Report
+name: Run Python Playwright Tests with Allure Report
 
 on:
   push:
