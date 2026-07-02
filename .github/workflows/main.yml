@@ -2,7 +2,6 @@ name: Demo web application QA RUN
 
 on:
   workflow_dispatch:
-    # 🌟 ಇಲ್ಲಿ ಮ್ಯಾನುಯಲ್ ಆಗಿ ಆರಿಸಲು ಇನ್‌ಪುಟ್‌ಗಳನ್ನು ಸೇರಿಸಲಾಗಿದೆ
     inputs:
       environment:
         description: 'qa'
@@ -12,6 +11,7 @@ on:
         options:
           - qa
           - staging
+
       browser:
         description: 'chromium'
         required: true
@@ -28,64 +28,104 @@ permissions:
 jobs:
   regression-test:
     runs-on: ubuntu-latest
-    
-    # 🌟 ನೀವು ಆರಿಸುವ ಇನ್‌ಪುಟ್‌ಗೆ ತಕ್ಕಂತೆ ಗಿಟ್‌ಹಬ್‌ನ ಆಯಾ ಎನ್ವಿರಾನ್ಮೆಂಟ್ ಕನೆಕ್ಟ್ ಆಗುತ್ತದೆ
+
     environment: ${{ github.event.inputs.environment }}
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install pytest pytest-playwright allure-pytest python-dotenv
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest pytest-playwright allure-pytest python-dotenv
 
-    - name: Install Playwright Browsers with Dependencies
-      run: |
-        playwright install --with-deps
+      - name: Install Playwright Browsers
+        run: playwright install --with-deps
 
-    - name: Run pytest with Allure
-      env:
-        PYTHONPATH: .
-        # 🌟 ಗಿಟ್‌ಹಬ್ ಎನ್ವಿರಾನ್ಮೆಂಟ್ ಸೀಕ್ರೆಟ್ಸ್‌ನಿಂದ ರಿಯಲ್ ವ್ಯಾಲ್ಯೂಗಳನ್ನು ಸಿಸ್ಟಮ್ ಮೆಮೊರಿಗೆ ಇಂಜೆಕ್ಟ್ ಮಾಡುತ್ತದೆ
-        base_url: ${{ secrets.BASE_URL }}
-        user_name: ${{ secrets.USER_NAME }}
-        password: ${{ secrets.PASSWORD }}
-      run: |
-        # 🌟 ನಿಮ್ಮ ಕಸ್ಟಮ್ CLI ಆಪ್ಷನ್‌ಗಳು ಮತ್ತು ಆಲ್-ಲೂರ್ ಎರಡನ್ನೂ ಒಟ್ಟಿಗೆ ರನ್ ಮಾಡುತ್ತದೆ
-        pytest --browsername=${{ github.event.inputs.browser }} --env=${{ github.event.inputs.environment }} --alluredir=allure-results -n auto
-      continue-on-error: true
+      - name: Run pytest with Allure
+        env:
+          PYTHONPATH: .
+          base_url: ${{ secrets.BASE_URL }}
+          user_name: ${{ secrets.USER_NAME }}
+          password: ${{ secrets.PASSWORD }}
+        run: |
+          pytest \
+            --browsername=${{ github.event.inputs.browser }} \
+            --env=${{ github.event.inputs.environment }} \
+            --alluredir=allure-results \
+            -n auto
+        continue-on-error: true
 
-    - name: Verify Allure Results
-      if: always()
-      run: |
-          echo "===== Allure Results ====="
-          ls -lah allure-results
+      ####################################################################
+      # DEBUG 1
+      ####################################################################
+      - name: Debug Allure Results Folder
+        if: always()
+        run: |
+          echo "========== allure-results =========="
+          pwd
+          ls -lah
           echo ""
-          echo "Result JSON files:"
-          find allure-results -name "*-result.json"
+          ls -lah allure-results || true
+          echo ""
+          echo "JSON Files"
+          find allure-results -type f || true
+          echo ""
+          echo "Result Files Count"
+          find allure-results -name "*-result.json" | wc -l
 
-    - name: Run Allure Action to Generate Report
-      uses: simple-elf/allure-report-action@master
-      if: always()
-      with:
-        allure_results: allure-results
-        keep_reports: 3
-        gh_pages: gh-pages
-        allure_report: allure-report
+      - name: Generate Allure Report
+        if: always()
+        uses: simple-elf/allure-report-action@master
+        with:
+          allure_results: allure-results
+          allure_report: allure-report
+          gh_pages: gh-pages
+          keep_reports: 3
 
-    - name: Deploy Allure Report to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      if: always()
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
-        publish_dir: allure-report          # 🌟 ಇದು ನೇರವಾಗಿ ರೆಡಿ ಆದ ರಿಪೋರ್ಟ್ ಅನ್ನು ಕಳುಹಿಸುತ್ತದೆ
-        force_orphan: true          
+      ####################################################################
+      # DEBUG 2
+      ####################################################################
+      - name: Debug Generated Report
+        if: always()
+        run: |
+          echo "========== allure-report =========="
+          ls -lah allure-report || true
+          echo ""
+          echo "Folder Structure"
+          find allure-report -maxdepth 3
+          echo ""
+          echo "Checking data folder"
+          ls -lah allure-report/data || true
+          echo ""
+          echo "Checking test-cases"
+          ls -lah allure-report/data/test-cases || true
+          echo ""
+          echo "Checking widgets"
+          ls -lah allure-report/widgets || true
+
+      ####################################################################
+      # DEBUG 3
+      ####################################################################
+      - name: Upload Generated Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-allure-report
+          path: allure-report
+
+      - name: Deploy to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-report
+          force_orphan: true
