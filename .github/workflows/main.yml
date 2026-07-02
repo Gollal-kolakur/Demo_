@@ -63,6 +63,15 @@ jobs:
         pytest --browsername=${{ github.event.inputs.browser }} --env=${{ github.event.inputs.environment }} --alluredir=allure-results -n auto
       continue-on-error: true
 
+    - name: Verify Allure Results
+      if: always()
+      run: |
+          echo "===== Allure Results ====="
+          ls -lah allure-results
+          echo ""
+          echo "Result JSON files:"
+          find allure-results -name "*-result.json"
+
     - name: Run Allure Action to Generate Report
       uses: simple-elf/allure-report-action@master
       if: always()
