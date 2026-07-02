@@ -6,10 +6,11 @@ class contact_us:
 
     def __init__(self, page):
         self.page = page
+        self.navigation_click =  page.get_by_role("link", name = "Contact us")
 
 
     def navigate_contact_page(self):
-       self.page.get_by_role("link", name = "Contact us").click()
+       self.navigation_click.click()
        expect(self.page.get_by_text("Get In Touch")).to_be_visible()
 
        self.page.get_by_placeholder("Name").fill("Gollal")
