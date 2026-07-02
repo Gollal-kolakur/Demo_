@@ -1,4 +1,4 @@
-name: Run Python Playwright Tests with Allure Report
+name: Demo web application QA RUN
 
 on:
   workflow_dispatch:
