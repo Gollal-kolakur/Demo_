@@ -112,20 +112,30 @@ jobs:
           ls -lah allure-report/widgets || true
 
       ####################################################################
-      # DEBUG 3
+            ####################################################################
+      # DEBUG 3 - Inspect Allure Data
       ####################################################################
-      - name: Upload Generated Report
+      - name: Inspect Allure Data
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: generated-allure-report
-          path: allure-report
+        run: |
+          echo "========== ALLURE DATA =========="
 
-      - name: Deploy to GitHub Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-report
-          force_orphan: true
+          echo ""
+          echo "===== data folder ====="
+          find allure-report/data -maxdepth 2 -type f || true
+
+          echo ""
+          echo "===== test-cases folder ====="
+          ls -lah allure-report/data/test-cases || true
+
+          echo ""
+          echo "===== summary.json ====="
+          cat allure-report/widgets/summary.json || true
+
+          echo ""
+          echo "===== suites.json ====="
+          cat allure-report/widgets/suites.json || true
+
+          echo ""
+          echo "===== categories.json ====="
+          cat allure-report/widgets/categories.json || true
