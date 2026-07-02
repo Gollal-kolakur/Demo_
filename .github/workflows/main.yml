@@ -2,6 +2,25 @@ name: Demo web application QA RUN
 
 on:
   workflow_dispatch:
+    # 🌟 ಇಲ್ಲಿ ಮ್ಯಾನುಯಲ್ ಆಗಿ ಆರಿಸಲು ಇನ್‌ಪುಟ್‌ಗಳನ್ನು ಸೇರಿಸಲಾಗಿದೆ
+    inputs:
+      environment:
+        description: 'qa'
+        required: true
+        default: 'qa'
+        type: choice
+        options:
+          - qa
+          - staging
+      browser:
+        description: 'chromium'
+        required: true
+        default: 'chromium'
+        type: choice
+        options:
+          - chromium
+          - firefox
+          - webkit
 
 permissions:
   contents: write
@@ -10,6 +29,9 @@ permissions:
 jobs:
   regression-test:
     runs-on: ubuntu-latest
+    
+    # 🌟 ನೀವು ಆರಿಸುವ ಇನ್‌ಪುಟ್‌ಗೆ ತಕ್ಕಂತೆ ಗಿಟ್‌ಹಬ್‌ನ ಆಯಾ ಎನ್ವಿರಾನ್ಮೆಂಟ್ ಕನೆಕ್ಟ್ ಆಗುತ್ತದೆ
+    environment: ${{ github.event.inputs.environment }}
 
     steps:
     - name: Checkout code
@@ -24,7 +46,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install pytest pytest-playwright allure-pytest
+        pip install pytest pytest-playwright allure-pytest python-dotenv
 
     - name: Install Playwright Browsers with Dependencies
       run: |
@@ -33,8 +55,13 @@ jobs:
     - name: Run pytest with Allure
       env:
         PYTHONPATH: .
+        # 🌟 ಗಿಟ್‌ಹಬ್ ಎನ್ವಿರಾನ್ಮೆಂಟ್ ಸೀಕ್ರೆಟ್ಸ್‌ನಿಂದ ರಿಯಲ್ ವ್ಯಾಲ್ಯೂಗಳನ್ನು ಸಿಸ್ಟಮ್ ಮೆಮೊರಿಗೆ ಇಂಜೆಕ್ಟ್ ಮಾಡುತ್ತದೆ
+        base_url: ${{ secrets.BASE_URL }}
+        user_name: ${{ secrets.USER_NAME }}
+        password: ${{ secrets.PASSWORD }}
       run: |
-        pytest --alluredir=allure-results
+        # 🌟 ನಿಮ್ಮ ಕಸ್ಟಮ್ CLI ಆಪ್ಷನ್‌ಗಳು ಮತ್ತು ಆಲ್-ಲೂರ್ ಎರಡನ್ನೂ ಒಟ್ಟಿಗೆ ರನ್ ಮಾಡುತ್ತದೆ
+        pytest --browsername=${{ github.event.inputs.browser }} --env=${{ github.event.inputs.environment }} --alluredir=allure-results -n auto
       continue-on-error: true
 
     - name: Run Allure Action to Generate Report
