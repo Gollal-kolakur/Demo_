@@ -69,8 +69,7 @@ jobs:
       if: always()
       with:
         allure_results: allure-results
-        allure_history: allure-history
-        keep_reports: 5
+        keep_reports: 3
         gh_pages: gh-pages
         allure_report: allure-report
 
@@ -80,5 +79,5 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages
-        publish_dir: allure-report          # 🌟 ಇಲ್ಲಿ 'allure-report' ಎಂದು ಬದಲಾಯಿಸಿ
-        force_orphan: true 
+        publish_dir: allure-report          # 🌟 ಇದು ನೇರವಾಗಿ ರೆಡಿ ಆದ ರಿಪೋರ್ಟ್ ಅನ್ನು ಕಳುಹಿಸುತ್ತದೆ
+        force_orphan: true          
