@@ -3,13 +3,12 @@ name: Demo web application QA RUN
 on:
   workflow_dispatch:
 
-# ಈ ಕೆಳಗಿನ ಪರ್ಮಿಷನ್ ಬ್ಲಾಕ್ 403 ದೋಷವನ್ನು ಸಂಪೂರ್ಣವಾಗಿ ನಿವಾರಿಸುತ್ತದೆ
 permissions:
   contents: write
   pages: write
 
 jobs:
-  test:
+  regression-test:
     runs-on: ubuntu-latest
 
     steps:
