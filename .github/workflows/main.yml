@@ -63,79 +63,20 @@ jobs:
             -n auto
         continue-on-error: true
 
-      ####################################################################
-      # DEBUG 1
-      ####################################################################
-      - name: Debug Allure Results Folder
-        if: always()
-        run: |
-          echo "========== allure-results =========="
-          pwd
-          ls -lah
-          echo ""
-          ls -lah allure-results || true
-          echo ""
-          echo "JSON Files"
-          find allure-results -type f || true
-          echo ""
-          echo "Result Files Count"
-          find allure-results -name "*-result.json" | wc -l
-
       - name: Generate Allure Report
         if: always()
-        uses: simple-elf/allure-report-action@master
+        uses: simple-elf/allure-report-action@v1.13
         with:
           allure_results: allure-results
           allure_report: allure-report
           gh_pages: gh-pages
           keep_reports: 3
 
-      ####################################################################
-      # DEBUG 2
-      ####################################################################
-      - name: Debug Generated Report
+      - name: Deploy to GitHub Pages
         if: always()
-        run: |
-          echo "========== allure-report =========="
-          ls -lah allure-report || true
-          echo ""
-          echo "Folder Structure"
-          find allure-report -maxdepth 3
-          echo ""
-          echo "Checking data folder"
-          ls -lah allure-report/data || true
-          echo ""
-          echo "Checking test-cases"
-          ls -lah allure-report/data/test-cases || true
-          echo ""
-          echo "Checking widgets"
-          ls -lah allure-report/widgets || true
-
-      ####################################################################
-            ####################################################################
-      # DEBUG 3 - Inspect Allure Data
-      ####################################################################
-      - name: Inspect Allure Data
-        if: always()
-        run: |
-          echo "========== ALLURE DATA =========="
-
-          echo ""
-          echo "===== data folder ====="
-          find allure-report/data -maxdepth 2 -type f || true
-
-          echo ""
-          echo "===== test-cases folder ====="
-          ls -lah allure-report/data/test-cases || true
-
-          echo ""
-          echo "===== summary.json ====="
-          cat allure-report/widgets/summary.json || true
-
-          echo ""
-          echo "===== suites.json ====="
-          cat allure-report/widgets/suites.json || true
-
-          echo ""
-          echo "===== categories.json ====="
-          cat allure-report/widgets/categories.json || true
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-report
+          force_orphan: true
