@@ -46,11 +46,11 @@ def browser_page(playwright:Playwright, request ): #p is an instance object to c
         raise ValueError("Error: In .env file No base_url !")
 
     if browser_name == "chromium":
-        browser = playwright.chromium.launch()
+        browser = playwright.chromium.launch(headless=True,slow_mo=2000)
     elif browser_name == "firefox":
-        browser = playwright.firefox.launch()
+        browser = playwright.firefox.launch(headless=True,slow_mo=2000)
     elif browser_name == "webkit":
-        browser = playwright.webkit.launch()
+        browser = playwright.webkit.launch(headless=True,slow_mo=2000)
     else:
         raise ValueError(f"Unsupported browser: {browser_name}")
 

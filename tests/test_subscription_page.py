@@ -3,8 +3,8 @@ from pages.subscription_page import subscription_page
     
     
     
-def test_subscribe(home_page):
-    sub = subscription_page(home_page)
+def test_subscribe(browser_page):
+    sub = subscription_page(browser_page)
     sub.subscription()
 
 
