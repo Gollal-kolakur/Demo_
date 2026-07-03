@@ -1,4 +1,4 @@
-name: Demo web application QA RUN
+name: web application QA RUN Demo
 
 on:
   workflow_dispatch:
