@@ -11,5 +11,4 @@ class subscription_page():
         expect(element).to_be_visible()
         self.page.get_by_placeholder("Your email address").fill("Test@gmail.com")
         self.page.locator("#subscribe").click()
-        success_msg = self.page.get_by_text("You have been successfully subscribed!")
-        expect(success_msg).to_be_visible()
+

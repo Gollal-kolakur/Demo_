@@ -22,5 +22,17 @@
     "username":"gollal009@com",
     "password": ""
     }
+  ],
+
+  "user_cred_2":
+  [
+    {
+    "Name": "Gollal",
+    "Email": "gollal009@gmail.com"
+    },
+    {
+    "Name": "Gk",
+    "Email": "gollal001@gmail.com"
+    }
   ]
 }

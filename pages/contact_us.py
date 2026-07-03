@@ -22,8 +22,6 @@ class contact_us:
 
        self.page.locator("#message").fill("djbsjdb")
 
-       self.page.set_input_files("input[type='file']", r"C:\Users\BEQ\Desktop\trial.txt")
-
        self.page.on("dialog",lambda dialog:dialog.accept())
        self.page.get_by_role("button", name = "Submit").click()
        self.page.wait_for_timeout(10000)
