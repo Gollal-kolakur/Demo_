@@ -43,7 +43,7 @@ def browser_page(playwright:Playwright, request ): #p is an instance object to c
     url = os.environ.get("base_url")
 
     if not url:
-        raise ValueError("Error: In .env file No base_url !")
+        raise ValueError("Error: In .env.qa file No base_url !")
 
     if browser_name == "chromium":
         browser = playwright.chromium.launch(headless=True,slow_mo=2000)

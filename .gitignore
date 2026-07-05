@@ -31,6 +31,6 @@ test-results/
 # Secrets / sensitive files
 # ----------------------------
 testdata/credential.json
-.env
+.env.qa
 .github/
 .yml

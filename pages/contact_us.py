@@ -9,6 +9,7 @@ class contact_us:
         self.navigation_click =  page.get_by_role("link", name = "Contact us")
 
 
+
     def navigate_contact_page(self):
        self.navigation_click.click()
        expect(self.page.get_by_text("Get In Touch")).to_be_visible()
