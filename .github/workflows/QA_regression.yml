@@ -1,0 +1,82 @@
+name: web application QA RUN Demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'qa'
+        required: true
+        default: 'qa'
+        type: choice
+        options:
+          - qa
+          - staging
+
+      browser:
+        description: 'chromium'
+        required: true
+        default: 'chromium'
+        type: choice
+        options:
+          - chromium
+          - firefox
+          - webkit
+
+permissions:
+  contents: write
+
+jobs:
+  regression-test:
+    runs-on: ubuntu-latest
+
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest pytest-playwright allure-pytest python-dotenv
+
+      - name: Install Playwright Browsers
+        run: playwright install --with-deps
+
+      - name: Run pytest with Allure
+        env:
+          PYTHONPATH: .
+          base_url: ${{ secrets.BASE_URL }}
+          user_name: ${{ secrets.USER_NAME }}
+          password: ${{ secrets.PASSWORD }}
+        run: |
+          pytest \
+            --browsername=${{ github.event.inputs.browser }} \
+            --env=${{ github.event.inputs.environment }} \
+            --alluredir=allure-results \
+            -n auto
+        continue-on-error: true
+
+      - name: Generate Allure Report
+        if: always()
+        uses: simple-elf/allure-report-action@v1.13
+        with:
+          allure_results: allure-results
+          allure_report: allure-report
+          gh_pages: gh-pages
+          keep_reports: 3
+
+      - name: Deploy to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-report
+          force_orphan: true
