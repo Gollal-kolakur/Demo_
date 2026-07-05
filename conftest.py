@@ -17,7 +17,7 @@ def browser_page(playwright, request ): #p is an instance object to control the 
     browser_name = request.config.getoption("browser_n")
     url = request.config.getoption("url_links")
     if browser_name == "chromium":
-        browser = playwright.chromium.launch(headless=False,slow_mo=2000)
+        browser = playwright.chromium.launch(headless=True,slow_mo=2000)
     elif browser_name == "firefox":
         browser = playwright.firefox.launch(headless=True,slow_mo=2000)
     elif browser_name == "webkit":

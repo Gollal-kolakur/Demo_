@@ -12,6 +12,7 @@ with open("testdata/login_cred_data.json") as f:
 @pytest.mark.parametrize("user_cred",user_cred_login)
 def test_login(browser_page,user_cred):
     button = LogInPage(browser_page)
+    browser_page.pause()
     data = user_cred["tag"]
     email = user_cred["username"]
     password = user_cred["password"]

@@ -25,7 +25,7 @@ class Signup:
 
 
     def open_signup_form(self):
-        self.page.get_by_role("link", name = "Signup / Login").click()
+        self.page.get_by_role("link", name = "Signup/Login").click()
         self.page.pause()
         sign_up = self.page.get_by_text(self.SIGN_UP_TEXT)
 
