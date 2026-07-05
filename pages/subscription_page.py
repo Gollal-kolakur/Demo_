@@ -1,6 +1,6 @@
 from playwright.sync_api import expect
 
-class subscription_page():
+class SubscriptionPage():
 
     def __init__(self,page):
         self.page = page

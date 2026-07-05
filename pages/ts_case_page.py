@@ -17,7 +17,7 @@ class Testcase:
     def __init__(self,page):
         self.page = page
         self.search_fill = page.get_by_role("button/link/checkbox", name = "login")
-        self.search_result = page.
+
 
 
     def log_in(self):
