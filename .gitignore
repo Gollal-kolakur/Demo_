@@ -32,3 +32,5 @@ test-results/
 # ----------------------------
 testdata/credential.json
 .env
+.github/
+.yml
