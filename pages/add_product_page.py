@@ -4,11 +4,9 @@ from playwright.sync_api import expect
 class add_product_cart():
 
 
-
-
-
     def __init__(self,page):
         self.page = page
+        
 
 
     def add_product(self):
