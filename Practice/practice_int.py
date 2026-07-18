@@ -1,7 +1,7 @@
 from typing import List
 import os
 
-#1check for palindrome
+#1check for palindrome for interview
 class Solution1:
 
     def __init__(self,word):
