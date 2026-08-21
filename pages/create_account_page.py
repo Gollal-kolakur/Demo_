@@ -56,7 +56,7 @@ class create_account:
 
 
 
-    def check_account(self):
+    def delete_account(self):
         pass
 
 
