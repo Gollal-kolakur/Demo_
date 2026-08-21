@@ -56,6 +56,11 @@ class create_account:
 
 
 
+    def delete_account(self):
+        pass
+
+
+
 
 
 

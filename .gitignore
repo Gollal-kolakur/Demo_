@@ -34,3 +34,4 @@ testdata/credential.json
 .env.qa
 .github/
 .yml
+.zip
